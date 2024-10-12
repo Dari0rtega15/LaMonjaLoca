@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
+
     public static Player Instance;
 
     public bool finalPlayer;
@@ -21,11 +22,19 @@ public class Player : MonoBehaviour
 
     public float mouseSensitivity = 200f;     // Sensibilidad del mouse
     public Transform playerCamera;            // Referencia a la cámara
-
     private float xRotation = 0f;             // Rotación vertical de la cámara
     public float punchRange = 2f;             // Rango de golpe cuerpo a cuerpo
     public LayerMask enemyMask;               // Detectar enemigos
     private DeathMenu deathMenu;              // Referencia al menú de muerte
+
+    // Audio
+    public AudioClip moveClip;                // Sonido de movimiento
+    public AudioClip fireClip;                // Sonido de disparo
+    public AudioClip punchClip;               // Sonido de golpe
+    public AudioClip damageClip;              // Sonido de recibir daño
+    public AudioClip deathClip;               // Sonido de muerte
+
+    private AudioSource audioSource;          // AudioSource para reproducir sonidos
 
     private void Awake()
     {
@@ -38,7 +47,8 @@ public class Player : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        currentHealth = maxHealth;            // Inicializa la vida completa
+        audioSource = GetComponent<AudioSource>(); // Inicializa el AudioSource
+        currentHealth = maxHealth;                // Inicializa la vida completa
         Cursor.lockState = CursorLockMode.Locked;
         deathMenu = FindObjectOfType<DeathMenu>();  // Encuentra el menú de muerte
     }
@@ -61,6 +71,12 @@ public class Player : MonoBehaviour
 
         Vector3 movement = transform.right * moveX + transform.forward * moveZ;
         rb.MovePosition(transform.position + movement * moveSpeed * Time.deltaTime);
+
+        // Reproduce sonido de movimiento si el jugador se mueve
+        if ((moveX != 0 || moveZ != 0) && !audioSource.isPlaying)
+        {
+            PlaySound(moveClip);
+        }
     }
 
     void Fire()
@@ -71,6 +87,10 @@ public class Player : MonoBehaviour
             // Dispara una bala
             GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
             bullet.GetComponent<Bullet>().damage = 10f; // Ajusta el daño si es necesario
+
+            // Reproduce sonido de disparo
+            PlaySound(fireClip);
+
             Debug.Log("Disparando una bala"); // Log para verificar disparos
         }
     }
@@ -101,6 +121,9 @@ public class Player : MonoBehaviour
                 {
                     enemy.TakeDamage(punchDamage);  // Aplica el daño
                     Debug.Log("Daño aplicado al enemigo: " + punchDamage); // Mensaje para verificar el daño
+
+                    // Reproduce sonido de golpe
+                    PlaySound(punchClip);
                 }
             }
             else
@@ -113,14 +136,23 @@ public class Player : MonoBehaviour
     public void TakeDamage(float damage)
     {
         currentHealth -= damage;
+
+        // Reproduce sonido de daño
+        PlaySound(damageClip);
+
         if (currentHealth <= 0)
         {
-            Die();
+            StartCoroutine(Die()); // Llama a la coroutine para morir
         }
     }
 
-    void Die()
+    IEnumerator Die()
     {
+        // Reproduce sonido de muerte
+        PlaySound(deathClip);
+
+        yield return new WaitForSeconds(1f); // Espera un segundo para permitir que el sonido se reproduzca
+
         if (!finalPlayer)
         {
             Debug.Log("Jugador ha muerto.");
@@ -142,8 +174,8 @@ public class Player : MonoBehaviour
             {
                 currentHealth = maxHealth;
             }
-            Debug.Log("Player se curo");
-            //lifeBar.fillAmount = currentHealth / maxHealth;
+            Debug.Log("Player se curó");
+            // lifeBar.fillAmount = currentHealth / maxHealth;
         }
     }
 
@@ -152,7 +184,16 @@ public class Player : MonoBehaviour
         if (punchDamage < 50f)
         {
             punchDamage += amount;
-            Debug.Log("Recibio mas danio");
+            Debug.Log("Recibió más daño");
+        }
+    }
+
+    // Función para reproducir sonidos
+    void PlaySound(AudioClip clip)
+    {
+        if (clip != null)
+        {
+            audioSource.PlayOneShot(clip);
         }
     }
 }
