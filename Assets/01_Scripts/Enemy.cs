@@ -18,6 +18,8 @@ public class Enemy : MonoBehaviour
     public float attackRange = 2f;
     private Transform player;
 
+    private Spawner spawner;
+
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player")?.transform; // Asignación segura
@@ -85,6 +87,7 @@ public class Enemy : MonoBehaviour
 
     void Die()
     {
+        Spawner.Instance.EnemyKilled();
         Destroy(gameObject);
     }
 }

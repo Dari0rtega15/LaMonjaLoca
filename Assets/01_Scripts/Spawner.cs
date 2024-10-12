@@ -4,17 +4,38 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
+    public static Spawner Instance;
+
+    public GameObject bossPapaPrefab;
     public GameObject[] enemyPrefabs;  // Prefabs de los enemigos
     public Transform[] spawnPoints;    // Puntos donde aparecen los enemigos
     public float spawnRate = 3f;       // Intervalo de tiempo entre spawns
     private float nextSpawn = 0f;
+    public int enemiesKilled = 0;       // Number of enemies killed
+    public int enemiesToKillForBoss = 1; // Number of kills required to spawn the boss
+    public bool bossSpawned = false;
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+    }
 
     void Update()
     {
-        if (Time.time > nextSpawn)
+        if (!bossSpawned)
         {
-            nextSpawn = Time.time + spawnRate;
-            SpawnEnemy();
+            if (enemiesKilled >= enemiesToKillForBoss)
+            {
+                SpawnBoss();
+            }
+            else if (Time.time > nextSpawn)
+            {
+                nextSpawn = Time.time + spawnRate;
+                SpawnEnemy();
+            }
         }
     }
 
@@ -24,5 +45,30 @@ public class Spawner : MonoBehaviour
         int randomEnemyIndex = Random.Range(0, enemyPrefabs.Length);
 
         Instantiate(enemyPrefabs[randomEnemyIndex], spawnPoints[randomSpawnIndex].position, Quaternion.identity);
+    }
+
+    void SpawnBoss()
+    {
+        bossSpawned = true;
+        GameObject boss = Instantiate(bossPapaPrefab, spawnPoints[0].position, Quaternion.identity); // Spawns boss at the first spawn point
+
+        // Find the camera attached to the boss
+        Camera bossCamera = boss.GetComponentInChildren<Camera>();
+
+        if (bossCamera != null)
+        {
+            // Find the CameraSwitcher on the player and assign the boss camera
+            CameraSwitcher cameraSwitcher = FindObjectOfType<CameraSwitcher>();
+            if (cameraSwitcher != null)
+            {
+                cameraSwitcher.AssignBossCamera(bossCamera);  // Assign the boss camera
+                cameraSwitcher.SwitchToBossCamera();          // Switch to the boss camera
+            }
+        }
+    }
+
+    public void EnemyKilled()
+    {
+        enemiesKilled++;
     }
 }

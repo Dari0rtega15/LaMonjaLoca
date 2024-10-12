@@ -63,7 +63,7 @@ public class Player : MonoBehaviour
     void Fire()
     {
         // Verifica si se presiona el botón de disparo
-        if (Input.GetKeyDown(KeyCode.T))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             // Dispara una bala
             GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
