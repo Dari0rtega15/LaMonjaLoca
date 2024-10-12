@@ -1,18 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TMPro;
-using UnityEditor.UIElements;
 
-public class ItemUI : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler, IDropHandler, IPointerClickHandler
+public class ItemUI : MonoBehaviour
 {
     public Item_SO item;
     public Image itemImage;
     public int itemCount = 0;
     public TextMeshProUGUI itemNameText;
     public TextMeshProUGUI itemQuantityText;
+
+    private bool isSelected = false;  // Track whether the item is currently selected
 
     public void Init(Item_SO item)
     {
@@ -35,27 +35,14 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHa
         itemQuantityText.gameObject.SetActive(true);
     }
 
-    public void OnBeginDrag(PointerEventData eventData)
+    public void SetSelected(bool selected)
     {
-
+        isSelected = selected;
+        // Change visual indicator if selected (e.g., changing color, scaling)
+        itemImage.color = selected ? Color.green : Color.white;  // Example of highlighting
     }
 
-    public void OnDrag(PointerEventData eventData)
-    {
-
-    }
-
-    public void OnDrop(PointerEventData eventData)
-    {
-
-    }
-
-    public void OnEndDrag(PointerEventData eventData)
-    {
-
-    }
-
-    public void OnPointerClick(PointerEventData eventData)
+    public void UseItem()
     {
         if (itemCount > 0)
         {
