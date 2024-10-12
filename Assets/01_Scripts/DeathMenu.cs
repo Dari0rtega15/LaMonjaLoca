@@ -22,8 +22,8 @@ public class DeathMenu : MonoBehaviour
 
     public void RestartGame()
     {
-        Time.timeScale = 1;  // Reanuda el juego
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name); // Reinicia la escena actual
+        //Time.timeScale = 1;  // Reanuda el juego
+        SceneManager.LoadScene("Final"); // Carga la escena deseada
     }
 
     public void QuitGame()
