@@ -29,5 +29,23 @@ public class Bullet : MonoBehaviour
             Debug.Log("Enemigo golpeado, daño aplicado: " + damage); // Log para confirmar el daño
             Destroy(gameObject); // Destruye la bala tras golpear al enemigo
         }
+
+        // Verifica si la bala golpea un bossDiablo
+        BossDiablo bossDiablo = hitInfo.GetComponent<BossDiablo>();
+        if (bossDiablo != null)
+        {
+            bossDiablo.TakeDamage(damage); // Aplica daño al enemigo
+            Debug.Log("Boss golpeado, daño aplicado: " + damage); // Log para confirmar el daño
+            Destroy(gameObject); // Destruye la bala tras golpear al enemigo
+        }
+
+        // Verifica si la bala golpea un bossPapa
+        BossPapa bossPapa = hitInfo.GetComponent<BossPapa>();
+        if (bossPapa != null)
+        {
+            bossPapa.TakeDamage(damage); // Aplica daño al enemigo
+            Debug.Log("Boss golpeado, daño aplicado: " + damage); // Log para confirmar el daño
+            Destroy(gameObject); // Destruye la bala tras golpear al enemigo
+        }
     }
 }

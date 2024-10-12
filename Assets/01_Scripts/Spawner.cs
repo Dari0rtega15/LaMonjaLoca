@@ -7,6 +7,7 @@ public class Spawner : MonoBehaviour
     public static Spawner Instance;
 
     public GameObject bossPapaPrefab;
+    public GameObject allyPrefab;
     public GameObject[] enemyPrefabs;  // Prefabs de los enemigos
     public Transform[] spawnPoints;    // Puntos donde aparecen los enemigos
     public float spawnRate = 3f;       // Intervalo de tiempo entre spawns
@@ -21,6 +22,12 @@ public class Spawner : MonoBehaviour
         {
             Instance = this;
         }
+    }
+
+    void Start()
+    {
+        // Start ally spawn coroutine
+        StartCoroutine(SpawnAllyRoutine());
     }
 
     void Update()
@@ -70,5 +77,18 @@ public class Spawner : MonoBehaviour
     public void EnemyKilled()
     {
         enemiesKilled++;
+    }
+
+    // Coroutine to spawn an ally every 60 seconds
+    IEnumerator SpawnAllyRoutine()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(60f);  // Wait for 1 minute
+
+            // Spawn ally at a random spawn point
+            int randomSpawnIndex = Random.Range(0, spawnPoints.Length);
+            Instantiate(allyPrefab, spawnPoints[randomSpawnIndex].position, Quaternion.identity);
+        }
     }
 }

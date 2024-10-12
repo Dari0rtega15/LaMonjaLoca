@@ -38,6 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
+  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2292,6 +2293,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bossPapaPrefab: {fileID: 151076673493643818, guid: 1cb78995faa215543a3ab2067fb7200e, type: 3}
+  allyPrefab: {fileID: 6976763387600894369, guid: 2e5c427495f36204897437457dfe8cb6, type: 3}
   enemyPrefabs:
   - {fileID: 2662948495080482977, guid: 0754507eed922b74db215709ca8d1b0d, type: 3}
   - {fileID: 7856721208665580002, guid: e88975d5e4d085340bebf8a0640d138e, type: 3}
@@ -2299,7 +2301,7 @@ MonoBehaviour:
   - {fileID: 1361079151}
   spawnRate: 10
   enemiesKilled: 0
-  enemiesToKillForBoss: 1
+  enemiesToKillForBoss: 20
   bossSpawned: 0
 --- !u!4 &1361079151
 Transform:

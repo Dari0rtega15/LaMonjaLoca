@@ -17,6 +17,8 @@ public class Enemy : MonoBehaviour
     public float meleeDamage = 10f;
     public float attackRange = 2f;
     private Transform player;
+    public GameObject[] itemsPrefabs;
+    public Transform dropPoint;
 
     private Spawner spawner;
 
@@ -88,6 +90,27 @@ public class Enemy : MonoBehaviour
     void Die()
     {
         Spawner.Instance.EnemyKilled();
+        DropItem();
         Destroy(gameObject);
     }
+
+    void DropItem()
+    {
+        float dropChance = 0.3f;  // 30% chance
+
+        // Check if the random value is below the drop chance
+        if (Random.Range(0f, 1f) <= dropChance)
+        {
+            if (itemsPrefabs.Length > 0 && dropPoint != null)
+            {
+                // Randomly select an item from the list
+                int randomItemIndex = Random.Range(0, itemsPrefabs.Length);
+                GameObject selectedItem = itemsPrefabs[randomItemIndex];
+
+                // Drop the randomly selected item at the drop point
+                Instantiate(selectedItem, dropPoint.position, Quaternion.identity);
+            }
+        }
+    }
+
 }

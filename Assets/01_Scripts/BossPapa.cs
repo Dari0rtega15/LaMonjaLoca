@@ -14,6 +14,7 @@ public class BossPapa : MonoBehaviour
     public int tackleDamage = 20;    // Damage dealt by tackle
 
     private float shootTimer = 0f;
+    public float health = 50f;
 
     private void Start()
     {
@@ -77,5 +78,21 @@ public class BossPapa : MonoBehaviour
         GameObject projectile = Instantiate(projectilePrefab, shootPoint.position, shootPoint.rotation);
         Vector3 directionToPlayer = (player.position - shootPoint.position).normalized;
         projectile.GetComponent<Rigidbody>().velocity = directionToPlayer * projectileSpeed;
+    }
+
+    public void TakeDamage(float damage)
+    {
+        health -= damage;
+        Debug.Log("Daño al boss: " + damage);
+        if (health <= 0)
+        {
+            Die();
+        }
+    }
+
+    void Die()
+    {
+        Spawner.Instance.EnemyKilled();
+        Destroy(gameObject);
     }
 }

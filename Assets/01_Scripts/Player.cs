@@ -125,6 +125,31 @@ public class Player : MonoBehaviour
                     // Reproduce sonido de golpe
                     PlaySound(punchClip);
                 }
+                else
+                {
+                    // If it's not an enemy, check if it's the boss
+                    BossDiablo bossDiablo = hit.transform.GetComponent<BossDiablo>();
+                    if (bossDiablo != null)
+                    {
+                        bossDiablo.TakeDamage(punchDamage);  // Apply damage to the boss
+                        Debug.Log("Damage applied to boss: " + punchDamage);  // Log message to verify damage
+
+                        // Play punch sound
+                        PlaySound(punchClip);
+                    }
+                    else
+                    {
+                        BossPapa bossPapa = hit.transform.GetComponent<BossPapa>();
+                        if (bossPapa != null)
+                        {
+                            bossPapa.TakeDamage(punchDamage);  // Apply damage to the boss
+                            Debug.Log("Damage applied to boss: " + punchDamage);  // Log message to verify damage
+
+                            // Play punch sound
+                            PlaySound(punchClip);
+                        }
+                    }
+                }
             }
             else
             {
