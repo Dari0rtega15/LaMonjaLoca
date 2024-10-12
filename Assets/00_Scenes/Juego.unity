@@ -38,6 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
+  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2050,7 +2051,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd1c68dfd1497454d9e38666e39ee063, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bossPapaPrefab: {fileID: 2131205277960113708, guid: 8c8878a185fb7ef4f8d76c24d7622146, type: 3}
+  bossPapaPrefab: {fileID: 151076673493643818, guid: 1cb78995faa215543a3ab2067fb7200e, type: 3}
   enemyPrefabs:
   - {fileID: 2662948495080482977, guid: 0754507eed922b74db215709ca8d1b0d, type: 3}
   - {fileID: 7856721208665580002, guid: e88975d5e4d085340bebf8a0640d138e, type: 3}

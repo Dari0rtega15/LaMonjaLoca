@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor.UIElements;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
     public static Player Instance;
+
+    public bool finalPlayer;
 
     public float moveSpeed = 5f;            // Velocidad de movimiento
     public Transform firePoint;              // Empty para disparar
@@ -118,9 +121,16 @@ public class Player : MonoBehaviour
 
     void Die()
     {
-        Debug.Log("Jugador ha muerto.");
-        deathMenu.ShowDeathMenu();  // Muestra el menú de muerte
-        gameObject.SetActive(false);  // Desactiva al jugador cuando muere
+        if (!finalPlayer)
+        {
+            Debug.Log("Jugador ha muerto.");
+            deathMenu.ShowDeathMenu();  // Muestra el menú de muerte
+            gameObject.SetActive(false);  // Desactiva al jugador cuando muere
+        }
+        else
+        {
+            SceneManager.LoadScene("Main Menu");
+        }
     }
 
     public void HealPlayer(float amount)

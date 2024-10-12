@@ -22,7 +22,7 @@ public class DeathMenu : MonoBehaviour
 
     public void RestartGame()
     {
-        //Time.timeScale = 1;  // Reanuda el juego
+        Time.timeScale = 1;  // Reanuda el juego
         SceneManager.LoadScene("Final"); // Carga la escena deseada
     }
 
