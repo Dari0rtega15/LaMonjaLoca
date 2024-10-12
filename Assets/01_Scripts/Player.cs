@@ -1,16 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEditor.UIElements;
 using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    public static Player Instance;
+
     public float moveSpeed = 5f;            // Velocidad de movimiento
     public Transform firePoint;              // Empty para disparar
     public GameObject bulletPrefab;          // Prefab de la bala
     public float punchDamage = 15f;          // Daño del golpe
     private Rigidbody rb;
     public float maxHealth = 100f;           // Vida máxima del jugador
-    private float currentHealth;              // Vida actual
+    public float currentHealth;              // Vida actual
 
     public float mouseSensitivity = 200f;     // Sensibilidad del mouse
     public Transform playerCamera;            // Referencia a la cámara
@@ -20,6 +24,13 @@ public class Player : MonoBehaviour
     public LayerMask enemyMask;               // Detectar enemigos
     private DeathMenu deathMenu;              // Referencia al menú de muerte
 
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+    }
 
     void Start()
     {
@@ -110,5 +121,28 @@ public class Player : MonoBehaviour
         Debug.Log("Jugador ha muerto.");
         deathMenu.ShowDeathMenu();  // Muestra el menú de muerte
         gameObject.SetActive(false);  // Desactiva al jugador cuando muere
+    }
+
+    public void HealPlayer(float amount)
+    {
+        if (currentHealth < maxHealth)
+        {
+            currentHealth += amount;
+            if (currentHealth > maxHealth)
+            {
+                currentHealth = maxHealth;
+            }
+            Debug.Log("Player se curo");
+            //lifeBar.fillAmount = currentHealth / maxHealth;
+        }
+    }
+
+    public void MoreDamage(float amount)
+    {
+        if (punchDamage < 50f)
+        {
+            punchDamage += amount;
+            Debug.Log("Recibio mas danio");
+        }
     }
 }
